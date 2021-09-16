@@ -3,20 +3,39 @@ import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
 const Form = ({ addHandler }) => {
   const [text, setText] = useState();
+  const [msg, setMsg] = useState(null);
+
   const onChange = (text) => {
     setText(text);
   };
 
+  const showMsg = () => {
+    setMsg("Добавлен...")
+    setTimeout(() => {
+      setMsg("")
+    }, 2000);
+  }
 
+  const clearText = () => {
+    setText("")
+  }
 
   return (
-    <View style={styles.main}>
+    <View>
       <TextInput
+        value={text}
         style={styles.input}
         onChangeText={onChange}
         placeholder="Впишите задачу..."
       />
-      <Button color="green" title="Добавить задачу" onPress={()=>addHandler(text)}/>
+      {msg !== null ? (
+        <Text style={styles.msgText}>{msg}</Text>
+      ) : null}
+      <Button
+        color="green"
+        title="Добавить задачу"
+        onPress={() => {addHandler(text); clearText(); showMsg()}}
+      />
     </View>
   );
 };
@@ -31,4 +50,10 @@ const styles = StyleSheet.create({
     marginHorizontal: "20%",
     width: "60%",
   },
+  msgText: {
+    width: "100%",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 14,
+  }
 });
